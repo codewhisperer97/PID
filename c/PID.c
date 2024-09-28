@@ -154,10 +154,11 @@ void tick(PIDController *c) {
 				c->error = regErr;
 			}
 			else if(altErr1Abs < regErrAbs && altErr1Abs < altErr2Abs) {
-				c->error = altErr1Abs;
+				c->error = altErr1;
 			}
 			else if(altErr2Abs < regErrAbs && altErr2Abs < altErr1Abs) {
-				c->error = altErr2Abs;
+                // This path is necesarily in the reverse direction, so we add a negative sign here
+				c->error = -altErr2;
 			}
 		}
 		else {
