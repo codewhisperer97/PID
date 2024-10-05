@@ -56,7 +56,6 @@
 
 #include "PID.h"
 
-
 /**
  * Constructs the PIDController object with PID Gains and function pointers
  * for retrieving feedback (pidSource) and delivering output (pidOutput).
@@ -298,6 +297,16 @@ template <class T>
 T PIDController<T>::getError()
 {
   return error;
+}
+
+/**
+ * Returns the previsou calculated error of this PIDController.
+ * @return The previsou calculated error of this PIDController.
+ */
+template <class T>
+T PIDController<T>::getLastError()
+{
+  return lastError;
 }
 
 /**
@@ -715,6 +724,7 @@ void PIDController<T>::registerTimeFunction(unsigned long (*getSystemTime)())
 {
   _getSystemTime = getSystemTime;
   timeFunctionRegistered = true;
+  lastTime = _getSystemTime();
 }
 
 /*

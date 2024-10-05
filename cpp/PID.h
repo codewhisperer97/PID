@@ -14,6 +14,7 @@ public:
   T getOutput();
   T getFeedback();
   T getError();
+  T getLastError();
   void setEnabled(bool e);
   bool isEnabled();
   T getProportionalComponent();
