@@ -56,7 +56,6 @@
 
 #include "PID.h"
 
-
 /**
  * Constructs the PIDController object with PID Gains and function pointers
  * for retrieving feedback (pidSource) and delivering output (pidOutput).
@@ -182,11 +181,12 @@ T PIDController<T>::tick()
       }
       else if(altErr1Abs < regErrAbs && altErr1Abs < altErr2Abs) //If altErr1Abs is smallest
       {
-        error = altErr1Abs;
+        error = altErr1;
       }
       else if(altErr2Abs < regErrAbs && altErr2Abs < altErr1Abs) //If altErr2Abs is smallest
       {
-        error = altErr2Abs;
+        // This path is necesarily in the reverse direction, so we add a negative sign here
+        error = -altErr2;
       }
     }
     else
@@ -297,6 +297,16 @@ template <class T>
 T PIDController<T>::getError()
 {
   return error;
+}
+
+/**
+ * Returns the previsou calculated error of this PIDController.
+ * @return The previsou calculated error of this PIDController.
+ */
+template <class T>
+T PIDController<T>::getLastError()
+{
+  return lastError;
 }
 
 /**
@@ -714,6 +724,7 @@ void PIDController<T>::registerTimeFunction(unsigned long (*getSystemTime)())
 {
   _getSystemTime = getSystemTime;
   timeFunctionRegistered = true;
+  lastTime = _getSystemTime();
 }
 
 /*
